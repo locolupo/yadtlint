@@ -1,5 +1,6 @@
 .git
 .coverage
 .idea
+target
 *.py[oc]
 ve
