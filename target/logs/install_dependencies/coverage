@@ -1,0 +1,16 @@
+Downloading/unpacking coverage
+  Running setup.py egg_info for package coverage
+    
+    warning: no previously-included files matching '*.pyc' found anywhere in distribution
+Installing collected packages: coverage
+  Running setup.py install for coverage
+    building 'coverage.tracer' extension
+    llvm-gcc-4.2 -fno-strict-aliasing -fno-common -dynamic -g -Os -pipe -fno-common -fno-strict-aliasing -fwrapv -mno-fused-madd -DENABLE_DTRACE -DMACOSX -DNDEBUG -Wall -Wstrict-prototypes -Wshorten-64-to-32 -DNDEBUG -g -fwrapv -Os -Wall -Wstrict-prototypes -DENABLE_DTRACE -arch i386 -arch x86_64 -pipe -I/System/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7 -c coverage/tracer.c -o build/temp.macosx-10.7-intel-2.7/coverage/tracer.o
+    llvm-gcc-4.2 -Wl,-F. -bundle -undefined dynamic_lookup -Wl,-F. -arch i386 -arch x86_64 build/temp.macosx-10.7-intel-2.7/coverage/tracer.o -o build/lib.macosx-10.7-intel-2.7/coverage/tracer.so
+    
+    warning: no previously-included files matching '*.pyc' found anywhere in distribution
+    Installing coverage2 script to /Users/mwolf/PycharmProjects/yadtlint/ve/bin
+    Installing coverage-2.7 script to /Users/mwolf/PycharmProjects/yadtlint/ve/bin
+    Installing coverage script to /Users/mwolf/PycharmProjects/yadtlint/ve/bin
+Successfully installed coverage
+Cleaning up...

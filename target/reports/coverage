@@ -1,0 +1,14 @@
+Name                                                                                      Stmts   Miss  Cover   Missing
+-----------------------------------------------------------------------------------------------------------------------
+ve/lib/python2.7/site-packages/pythonbuilder/cli                                            159    153     4%   17-49, 53-54, 56, 61-274
+ve/lib/python2.7/site-packages/pythonbuilder/core                                           230    209     9%   16-241, 247-319, 327-330, 336, 339-366, 371, 375, 378, 381, 384-385
+ve/lib/python2.7/site-packages/pythonbuilder/execution                                      184    135    27%   16-55, 59, 63, 68-87, 92-109, 114-170, 172-174, 184-185, 196, 198-200, 207, 217, 220, 223, 231, 233, 238, 241, 246-249, 253-274
+ve/lib/python2.7/site-packages/pythonbuilder/plugins/core_plugin                             50     42    16%   16-27, 30-40, 44-45, 49-54, 58-60, 64-86
+ve/lib/python2.7/site-packages/pythonbuilder/plugins/python/coverage_plugin                 101     93     8%   16-46, 50-137, 143-169
+ve/lib/python2.7/site-packages/pythonbuilder/plugins/python/install_dependencies_plugin      63     61     3%   17-37, 43-112
+ve/lib/python2.7/site-packages/pythonbuilder/plugins/python/unittest_plugin                  51     26    49%   17-37, 54, 59, 61-65, 76, 83-84, 87-88
+ve/lib/python2.7/site-packages/pythonbuilder/reactor                                        138    136     1%   16-132, 140-226
+ve/lib/python2.7/site-packages/pythonbuilder/terminal                                        30     27    10%   16-54, 58, 71, 79-93
+ve/lib/python2.7/site-packages/pythonbuilder/utils                                           98     64    35%   16-25, 28-34, 61, 63, 65, 70, 81, 88-103, 109-110, 115-124, 128, 132, 135, 137, 140-178
+-----------------------------------------------------------------------------------------------------------------------
+TOTAL                                                                                      1104    946    14%   
