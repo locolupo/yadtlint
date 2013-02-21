@@ -15,6 +15,7 @@ use_plugin('python.core')
 use_plugin('python.unittest')
 use_plugin('python.install_dependencies')
 use_plugin('python.distutils')
+use_plugin('python.flake8')
 
 authors = [Author('Marcel Wolf', 'marcel.wolf@immobilienscout24.de')]
 description = 'linter for YADT'
@@ -23,10 +24,10 @@ name = 'yadtlint'
 license = 'GNU GPL v3'
 summary = 'a linter yadt'
 url = 'https://github.com/locolupo/yadtlint'
-version = '0.0.1'
+version = '0.0.2'
 
 
-default_task = ['publish']
+default_task = ['analyze', 'publish']
 
 
 @init
@@ -35,6 +36,9 @@ def set_properties(project):
 
     project.set_property('copy_resources_target', '$dir_dist')
     project.get_property('filter_resources_glob').append('**/yadtcontroller/__init__.py')
+    project.build_depends_on('flake8')
+
+    project.depends_on('docopt')
 
 @init(environments="teamcity")
 def set_properties_for_teamcity(project):

@@ -2,7 +2,7 @@
 # coding=utf-8
 
 
-import yadtlint
+import yadt_lint
 
 if __name__ == "__main__":
-    yadtlint.run()
+    yadt_lint.run()

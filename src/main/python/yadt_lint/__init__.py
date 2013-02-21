@@ -1,11 +1,19 @@
+"""
+yadtlint
+
+Usage:
+yadtlint (-h | --help)
+yadtlint --version
+
+Options:
+-h --help     Show this screen.
+--version     Show version.
+
+"""
 __version__ = '${version}'
 
-from sys import stdout
-
-
-def write(text):
-    stdout.write(text)
+from docopt import docopt
 
 
 def run():
-    write('yadtlint {0}'.format(__version__))
+    docopt(__doc__, version=__version__)
