@@ -5,11 +5,26 @@ import yadt_lint
 
 
 class YadtLintTest(unittest.TestCase):
-    def test_should_write_name_and_version_to_stdout(self):
-        when(yadt_lint).docopt(any_value()).thenReturn(None)
+
+    def tearDown(self):
+        unstub()
+
+    def test_should_initialize_docopt(self):
+        when(yadt_lint).docopt(any_value(), version=any_value()).thenReturn(None)
 
         yadt_lint.run()
 
         verify(yadt_lint).docopt(yadt_lint.__doc__, version='${version}')
 
-        unstub()
+    def test_should_print_hello_world_when_option_i_is_given(self):
+
+        # given
+        arguments = {'-i': True}
+        when(yadt_lint).docopt(any_value(), version=any_value()).thenReturn(arguments)
+        when(yadt_lint).print_hello_world().thenReturn(None)
+
+        # when
+        yadt_lint.run()
+
+        # then
+        verify(yadt_lint).print_hello_world()
