@@ -1,5 +1,5 @@
 import unittest
-from mockito import when, verify, unstub, any as any_value
+from mockito import when as mock_when, verify, unstub, any as any_value
 
 import yadt_lint
 
@@ -10,7 +10,7 @@ class YadtLintTest(unittest.TestCase):
         unstub()
 
     def test_should_initialize_docopt(self):
-        when(yadt_lint).docopt(any_value(), version=any_value()).thenReturn(None)
+        mock_when(yadt_lint).docopt(any_value(), version=any_value()).thenReturn(None)
 
         yadt_lint.run()
 
@@ -20,8 +20,8 @@ class YadtLintTest(unittest.TestCase):
 
         # given
         arguments = {'-i': True}
-        when(yadt_lint).docopt(any_value(), version=any_value()).thenReturn(arguments)
-        when(yadt_lint).print_hello_world().thenReturn(None)
+        mock_when(yadt_lint).docopt(any_value(), version=any_value()).thenReturn(arguments)
+        mock_when(yadt_lint).print_hello_world().thenReturn(None)
 
         # when
         yadt_lint.run()
