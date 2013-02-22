@@ -6,7 +6,7 @@
  To Public License, Version 2, as published by Sam Hocevar. See
  http://sam.zoy.org/wtfpl/COPYING for more details.
 '''
-from pythonbuilder.core import use_plugin, init, Author
+from pybuilder.core import use_plugin, init, Author
 
 use_plugin('copy_resources')
 use_plugin('filter_resources')
