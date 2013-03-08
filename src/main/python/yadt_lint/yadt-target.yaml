@@ -1,0 +1,7 @@
+%YAML 1.2
+---
+!!omap
+- hosts :
+   - valid hostnames
+   - [devytc01, devytc02]
+   - Which hosts to handle in this target

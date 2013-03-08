@@ -1,5 +1,5 @@
 import unittest
-from mockito import when as mock_when, verify, unstub, any as any_value
+from mockito import when as mock_when, verify, unstub, any as any_value, mock
 
 import yadt_lint
 
@@ -14,17 +14,17 @@ class YadtLintTest(unittest.TestCase):
 
         yadt_lint.run()
 
-        verify(yadt_lint).docopt(yadt_lint.__doc__, version='${version}')
+        verify(yadt_lint).docopt('-i')
 
     def test_should_print_hello_world_when_option_i_is_given(self):
 
         # given
         arguments = {'-i': True}
         mock_when(yadt_lint).docopt(any_value(), version=any_value()).thenReturn(arguments)
-        mock_when(yadt_lint).print_hello_world().thenReturn(None)
+        mock_when(yadt_lint).print_file(any_value()).thenReturn()
 
         # when
         yadt_lint.run()
 
         # then
-        verify(yadt_lint).print_hello_world()
+        verify(yadt_lint).print_file()
