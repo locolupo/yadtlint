@@ -8,7 +8,6 @@
 '''
 from pybuilder.core import use_plugin, init, Author
 
-use_plugin('copy_resources')
 use_plugin('filter_resources')
 
 use_plugin('python.core')
