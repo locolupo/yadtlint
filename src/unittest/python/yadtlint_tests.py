@@ -57,6 +57,17 @@ class YadtLintTest(unittest.TestCase):
 
         verify(yadt_lint.sys).exit(1)
 
+    def test_should_exit_with_error_when_no_option_is_givenU(self):
+
+        mock_args = mock()
+        mock_when(yadt_lint).docopt(any_value(), version=any_value()).thenReturn(mock_args)
+        mock_when(yadt_lint)._get_configuration(any_value()).thenRaise(TypeError)
+        mock_when(yadt_lint.sys).exit(any_value()).thenReturn(None)
+
+        yadt_lint.run()
+
+        verify(yadt_lint.sys).exit(1)
+
     def test_validate_hosts_should_raise_exception_when_host_is_invalid(self):
         host_list = ['devman01', 'tuvman01', 'foofail01']
         self.assertRaises(ValueError, yadt_lint.validate_hostnames, host_list)

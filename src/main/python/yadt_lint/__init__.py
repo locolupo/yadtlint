@@ -66,6 +66,10 @@ def run():
     except IOError as error:
         logger.error(error)
         sys.exit(1)
+    except TypeError as error:
+        logger.error('No input given')
+        logger.error(error)
+        sys.exit(1)
 
 
 def validate_hostnames(hosts):
