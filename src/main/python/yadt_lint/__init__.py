@@ -3,18 +3,19 @@ yadtlint
 
 Usage:
 yadtlint (-h | --help)
+yadtlint validate <file>
 yadtlint --version
 yadtlint [options]
 
 Options:
---validate <file> specify input file for validation [default: target.yaml]
 -h --help     Show this screen.
 --version     Show version.
 
 """
 from docopt import docopt
-from logging import getLogger, basicConfig
+from logging import getLogger, basicConfig, INFO
 import yaml
+from yaml.scanner import ScannerError
 import phyles
 import sys
 import re
@@ -27,10 +28,11 @@ IS24HostPattern = re.compile(IS24HostnameRegex, re.IGNORECASE)
 
 logger = getLogger('yadt_lint')
 basicConfig()
+logger.setLevel(INFO)
 
 
-def _get_configuration(args):
-    with open(args['--validate']) as config_file:
+def _get_configuration(args):  # pragma: no cover
+    with open(args['<file>']) as config_file:
         configuration = yaml.load(config_file)
     return configuration
 
@@ -54,9 +56,16 @@ def run():
 
     args = docopt(__doc__, version=__version__)
 
-    configuration = _get_configuration(args)
-
-    _validate_schema(configuration)
+    try:
+        configuration = _get_configuration(args)
+        _validate_schema(configuration)
+    except ScannerError as error:
+        logger.error('Invalid YAML Format')
+        logger.error(error)
+        sys.exit(1)
+    except IOError as error:
+        logger.error(error)
+        sys.exit(1)
 
 
 def validate_hostnames(hosts):
