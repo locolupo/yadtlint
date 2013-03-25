@@ -38,6 +38,8 @@ def set_properties(project):
     project.build_depends_on('pyyaml')
     project.build_depends_on('configobj')
     project.build_depends_on('phyles')
+    project.build_depends_on('argparse')
+    project.build_depends_on('ordereddict')
 
     project.set_property('copy_resources_target', '$dir_dist')
     project.get_property('filter_resources_glob').append('**/yadtcontroller/__init__.py')
