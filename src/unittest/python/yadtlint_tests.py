@@ -17,7 +17,8 @@ class YadtLintTest(unittest.TestCase):
         unstub()
 
     def test_should_initialize_docopt(self):
-        mock_when(yadt_lint).docopt(any_value(), version=any_value()).thenReturn(None)
+        mock_args = {'<file>': 'target'}
+        mock_when(yadt_lint).docopt(any_value(), version=any_value()).thenReturn(mock_args)
         mock_when(yadt_lint)._get_configuration(any_value()).thenReturn(None)
         mock_when(yadt_lint)._validate_schema(any_value()).thenReturn(None)
 
@@ -26,7 +27,7 @@ class YadtLintTest(unittest.TestCase):
         verify(yadt_lint).docopt(yadt_lint.__doc__, version=yadt_lint.__version__)
 
     def test_run_should_call_get_configuration_and_validate_schema(self):
-        mock_args = mock()
+        mock_args = {'<file>': 'target'}
         mock_when(yadt_lint).docopt(any_value(), version=any_value()).thenReturn(mock_args)
         mock_configuration = mock()
         mock_when(yadt_lint)._get_configuration(any_value()).thenReturn(mock_configuration)
@@ -38,7 +39,7 @@ class YadtLintTest(unittest.TestCase):
         verify(yadt_lint)._validate_schema(mock_configuration)
 
     def test_run_should_exit_with_error_when_yaml_parsing_fails(self):
-        mock_args = mock()
+        mock_args = {'<file>': 'target'}
         mock_when(yadt_lint).docopt(any_value(), version=any_value()).thenReturn(mock_args)
         problem_mark = Mark('name', 1, 2, 3, '', '')
         mock_when(yadt_lint)._get_configuration(any_value()).thenRaise(ScannerError(problem_mark=problem_mark))
@@ -50,8 +51,7 @@ class YadtLintTest(unittest.TestCase):
         verify(yadt_lint.logger).error('Invalid YAML Format check position: (3:4)')
 
     def test_run_should_exit_with_error_when_wrong_file_is_given(self):
-
-        mock_args = mock()
+        mock_args = {'<file>': 'target'}
         mock_when(yadt_lint).docopt(any_value(), version=any_value()).thenReturn(mock_args)
         mock_when(yadt_lint)._get_configuration(any_value()).thenRaise(IOError)
         mock_when(yadt_lint.sys).exit(any_value()).thenReturn(None)
@@ -81,6 +81,16 @@ class YadtLintTest(unittest.TestCase):
         mock_when(yadt_lint.sys).exit(any_value()).thenReturn(None)
 
         yadt_lint._validate_schema(mock())
+
+        verify(yadt_lint.sys).exit(1)
+
+    def test_should_exit_when_invalid_targetfile_name_is_given(self):
+        mock_args = {'<file>': 'foobar'}
+        mock_when(yadt_lint).docopt(any_value(), version=any_value()).thenReturn(mock_args)
+        mock_when(yadt_lint.sys).exit(any_value()).thenReturn(None)
+        mock_when(yadt_lint)._validate_input(any_value()).thenReturn(None)
+
+        yadt_lint.run()
 
         verify(yadt_lint.sys).exit(1)
 

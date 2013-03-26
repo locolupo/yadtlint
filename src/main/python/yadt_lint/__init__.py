@@ -33,7 +33,10 @@ logger.setLevel(INFO)
 def run():
 
     args = docopt(__doc__, version=__version__)
-
+    filename = args['<file>']
+    if filename != 'target':
+        logger.error('is not a valid targetfile name, should be named target')
+        sys.exit(1)
     _validate_input(args)
 
 
