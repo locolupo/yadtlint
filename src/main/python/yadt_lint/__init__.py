@@ -3,9 +3,8 @@ yadtlint
 
 Usage:
 yadtlint (-h | --help)
-yadtlint validate <file>
+yadtlint validate <file> [options]
 yadtlint --version
-yadtlint [options]
 
 Options:
 -h --help     Show this screen.
@@ -31,6 +30,13 @@ basicConfig()
 logger.setLevel(INFO)
 
 
+def run():
+
+    args = docopt(__doc__, version=__version__)
+
+    _validate_input(args)
+
+
 def _get_configuration(args):  # pragma: no cover
     with open(args['<file>']) as config_file:
         configuration = yaml.load(config_file)
@@ -52,23 +58,16 @@ def _validate_schema(configuration):
         sys.exit(1)
 
 
-def run():
-
-    args = docopt(__doc__, version=__version__)
-
+def _validate_input(args):
     try:
         configuration = _get_configuration(args)
         _validate_schema(configuration)
     except ScannerError as error:
         if hasattr(error, 'problem_mark'):
             mark = error.problem_mark
-            logger.error('Invalid YAML Format check position: (%s:%s)' % (mark.line+1, mark.column+1))
+            logger.error('Invalid YAML Format check position: (%s:%s)' % (mark.line + 1, mark.column + 1))
         sys.exit(1)
     except IOError as error:
-        logger.error(error)
-        sys.exit(1)
-    except TypeError as error:
-        logger.error('No input given')
         logger.error(error)
         sys.exit(1)
 
