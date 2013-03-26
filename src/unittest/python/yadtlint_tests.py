@@ -1,6 +1,7 @@
 import unittest
 from mockito import when as mock_when, verify, unstub, any as any_value, mock, never
 from yaml.scanner import ScannerError
+from yaml.error import Mark
 import phyles
 
 import yadt_lint
@@ -39,12 +40,14 @@ class YadtLintTest(unittest.TestCase):
     def test_run_should_exit_with_error_when_yaml_parsing_fails(self):
         mock_args = mock()
         mock_when(yadt_lint).docopt(any_value(), version=any_value()).thenReturn(mock_args)
-        mock_when(yadt_lint)._get_configuration(any_value()).thenRaise(ScannerError)
+        problem_mark = Mark('name', 1, 2, 3, '', '')
+        mock_when(yadt_lint)._get_configuration(any_value()).thenRaise(ScannerError(problem_mark=problem_mark))
         mock_when(yadt_lint.sys).exit(any_value()).thenReturn(None)
 
         yadt_lint.run()
 
         verify(yadt_lint.sys).exit(1)
+        verify(yadt_lint.logger).error('Invalid YAML Format check position: (3:4)')
 
     def test_run_should_exit_with_error_when_wrong_file_is_given(self):
 

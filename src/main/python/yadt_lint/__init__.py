@@ -44,9 +44,9 @@ def _validate_schema(configuration):
     try:
         config = schema.validate_config(configuration)
         logger.info(config)
-        logger.info("Ok - targetfile valid")
+        logger.info('Ok - targetfile valid')
     except phyles.ConfigError as error:
-        logger.info("Nope - targetfile invalid")
+        logger.info('Nope - targetfile invalid')
         logger.info(error)
         logger.info(phyles.sample_config(schema))
         sys.exit(1)
@@ -60,8 +60,9 @@ def run():
         configuration = _get_configuration(args)
         _validate_schema(configuration)
     except ScannerError as error:
-        logger.error('Invalid YAML Format')
-        logger.error(error)
+        if hasattr(error, 'problem_mark'):
+            mark = error.problem_mark
+            logger.error('Invalid YAML Format check position: (%s:%s)' % (mark.line+1, mark.column+1))
         sys.exit(1)
     except IOError as error:
         logger.error(error)
@@ -77,5 +78,5 @@ def validate_hostnames(hosts):
         raise ValueError('No hostname given')
     for host in hosts:
         if not IS24HostPattern.match(host):
-            raise ValueError("hostname invalid: %s" % host)
+            raise ValueError('hostname invalid: %s' % host)
     return hosts
