@@ -1,0 +1,16 @@
+%YAML 1.2
+---
+!!omap
+- valid services
+- nagios:
+     needs_services:
+     - [Loadbalancer]
+- loadbalancer_VTM:
+    class:
+    - is24yadtshell.services.LoadbalancerService
+    loadbalancer_clusters:
+    - [pro-fe-vtm]
+    needs_services:
+    - [httpd]
+- httpd:
+- sample for a valid yadt.services file

@@ -3,7 +3,8 @@ yadtlint
 
 Usage:
 yadtlint (-h | --help)
-yadtlint validate <file> [options]
+yadtlint target_validate <file> [options]
+yadtlint services_validate <file> [options]
 yadtlint --version
 
 Options:
@@ -30,14 +31,29 @@ basicConfig()
 logger.setLevel(INFO)
 
 
+def input_target_file(args):
+    filename = args['<file>']
+    if filename != 'target.yaml':
+        logger.error('is not a valid targetfile name, should be named target')
+        sys.exit(1)
+    _validate_yaml_input(args)
+
+
+def input_services_file(args):
+    filename = args['<file>']
+    if filename != 'yadt.services':
+        logger.error('is not a valid yadt services name, should be named yadt.services')
+        sys.exit(1)
+    _validate_yaml_input(args)
+
+
 def run():
 
     args = docopt(__doc__, version=__version__)
-    filename = args['<file>']
-    if filename != 'target':
-        logger.error('is not a valid targetfile name, should be named target')
-        sys.exit(1)
-    _validate_input(args)
+    if args['services_validate']:
+        input_services_file(args)
+    if args['target_validate']:
+        input_target_file(args)
 
 
 def _get_configuration(args):  # pragma: no cover
@@ -46,7 +62,22 @@ def _get_configuration(args):  # pragma: no cover
     return configuration
 
 
-def _validate_schema(configuration):
+def _validate_services_schema(configuration):
+    spec = phyles.package_spec(phyles.Undefined, "yadt_lint", ".", "yadt-services.yaml")
+    converters = {'valid services': validate_services_input}
+    schema = phyles.load_schema(spec, converters)
+    try:
+        config = schema.validate_config(configuration)
+        logger.info(config)
+        logger.info('Ok - yadt.services valid')
+    except phyles.ConfigError as error:
+        logger.info('Nope - yadt.services invalid')
+        logger.info(error)
+        logger.info(phyles.sample_config(schema))
+        sys.exit(1)
+
+
+def _validate_target_schema(configuration):
     spec = phyles.package_spec(phyles.Undefined, "yadt_lint", ".", "yadt-target.yaml")
     converters = {'valid hostnames': validate_hostnames}
     schema = phyles.load_schema(spec, converters)
@@ -61,10 +92,13 @@ def _validate_schema(configuration):
         sys.exit(1)
 
 
-def _validate_input(args):
+def _validate_yaml_input(args):
     try:
         configuration = _get_configuration(args)
-        _validate_schema(configuration)
+        if args['target_validate']:
+            _validate_target_schema(configuration)
+        if args['services_validate']:
+            _validate_services_schema(configuration)
     except ScannerError as error:
         if hasattr(error, 'problem_mark'):
             mark = error.problem_mark
@@ -73,6 +107,10 @@ def _validate_input(args):
     except IOError as error:
         logger.error(error)
         sys.exit(1)
+
+
+def validate_services_input(services):
+    pass
 
 
 def validate_hostnames(hosts):

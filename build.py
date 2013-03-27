@@ -24,7 +24,7 @@ name = 'yadtlint'
 license = 'GNU GPL v3'
 summary = 'a linter yadt'
 url = 'https://github.com/locolupo/yadtlint'
-version = '0.0.2'
+version = '0.0.3'
 
 
 default_task = ['analyze', 'publish']
@@ -45,6 +45,7 @@ def set_properties(project):
     project.get_property('filter_resources_glob').append('**/yadtcontroller/__init__.py')
 
     project.depends_on('docopt')
+
 
 @init(environments="teamcity")
 def set_properties_for_teamcity(project):
