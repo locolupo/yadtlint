@@ -14,7 +14,6 @@ class YadtLintTest(unittest.TestCase):
         mock_when(yadt_lint.logger).error(any_value()).thenReturn(None)
         mock_when(yadt_lint.sys).exit(any_value()).thenReturn(None)
 
-
     def tearDown(self):
         unstub()
 
