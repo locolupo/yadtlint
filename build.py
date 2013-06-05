@@ -22,9 +22,9 @@ description = 'linter for YADT'
 
 name = 'yadtlint'
 license = 'GNU GPL v3'
-summary = 'a linter yadt'
+summary = 'a linter yadt configuration files'
 url = 'https://github.com/locolupo/yadtlint'
-version = '0.0.2'
+version = '0.1.0'
 
 
 default_task = ['analyze', 'publish']

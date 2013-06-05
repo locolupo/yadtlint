@@ -1,7 +1,7 @@
 %YAML 1.2
 ---
 !!omap
--  hosts:
+-  cheatsheet:
    - valid hostnames
-   - devytc01, devytc02
+   - http://www.yadt-project.org/
    - sample for a valid target file
