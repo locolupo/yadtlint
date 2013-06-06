@@ -18,7 +18,7 @@ class YadtLintTest(unittest.TestCase):
         unstub()
 
     def test_should_initialize_docopt(self):
-        mock_args = {'<file>': 'target.yaml',
+        mock_args = {'<file>': 'target',
                      'services_validate': False,
                      'target_validate': True}
         mock_when(yadt_lint).docopt(any_value(), version=any_value()).thenReturn(mock_args)
@@ -30,7 +30,7 @@ class YadtLintTest(unittest.TestCase):
         verify(yadt_lint).docopt(yadt_lint.__doc__, version=yadt_lint.__version__)
 
     def test_run_should_call_get_configuration_and_validate_target_schema(self):
-        mock_args = {'<file>': 'target.yaml',
+        mock_args = {'<file>': 'target',
                      'services_validate': False,
                      'target_validate': True}
         mock_when(yadt_lint).docopt(any_value(), version=any_value()).thenReturn(mock_args)
@@ -43,22 +43,8 @@ class YadtLintTest(unittest.TestCase):
         verify(yadt_lint)._get_configuration(mock_args)
         verify(yadt_lint)._validate_target_schema(mock_configuration)
 
-    def test_run_should_call_get_configuration_and_validate_services_schema(self):
-        mock_args = {'<file>': 'yadt.services.yaml',
-                     'services_validate': True,
-                     'target_validate': False}
-        mock_when(yadt_lint).docopt(any_value(), version=any_value()).thenReturn(mock_args)
-        mock_configuration = {}
-        mock_when(yadt_lint)._get_configuration(any_value()).thenReturn(mock_configuration)
-        mock_when(yadt_lint)._validate_services_schema(any_value()).thenReturn(None)
-
-        yadt_lint.run()
-
-        verify(yadt_lint)._get_configuration(mock_args)
-        verify(yadt_lint)._validate_services_schema(mock_configuration)
-
     def test_run_should_exit_with_error_when_target_yaml_parsing_fails(self):
-        mock_args = {'<file>': 'target.yaml',
+        mock_args = {'<file>': 'target',
                      'target_validate': True,
                      'services_validate': False}
         mock_when(yadt_lint).docopt(any_value(), version=any_value()).thenReturn(mock_args)
@@ -71,21 +57,8 @@ class YadtLintTest(unittest.TestCase):
         verify(yadt_lint.sys).exit(1)
         verify(yadt_lint.logger).error('Invalid YAML Format check position: (3:4)')
 
-    def test_run_should_exit_with_error_when_service_yaml_parsing_fails(self):
-        mock_args = {'<file>': 'yadt.services',
-                     'services_validate': True,
-                     'target_validate': False}
-        mock_when(yadt_lint).docopt(any_value(), version=any_value()).thenReturn(mock_args)
-        problem_mark = Mark('name', 1, 2, 3, '', '')
-        mock_when(yadt_lint)._get_configuration(any_value()).thenRaise(ScannerError(problem_mark=problem_mark))
-
-        yadt_lint.run()
-
-        verify(yadt_lint.sys).exit(1)
-        verify(yadt_lint.logger).error('Invalid YAML Format check position: (3:4)')
-
     def test_run_should_exit_with_error_when_non_existing_file_is_given(self):
-        mock_args = {'<file>': 'target.yaml',
+        mock_args = {'<file>': 'target',
                      'target_validate': True,
                      'services_validate': False}
         mock_when(yadt_lint).docopt(any_value(), version=any_value()).thenReturn(mock_args)
@@ -109,19 +82,6 @@ class YadtLintTest(unittest.TestCase):
 
         verify(yadt_lint.sys).exit(1)
 
-    def test_should_exit_woth_error_when_service_file_name_is_wrong(self):
-        mock_args = {'<file>': 'foobar',
-                     'target_validate': False,
-                     'services_validate': True}
-        mock_when(yadt_lint).docopt(any_value(), version=any_value()).thenReturn(mock_args)
-        mock_when(yadt_lint)._get_configuration(any_value()).thenReturn(None)
-        mock_when(yadt_lint.sys).exit(any_value()).thenReturn(None)
-        mock_when(yadt_lint)._validate_yaml_input(any_value()).thenReturn(None)
-
-        yadt_lint.run()
-
-        verify(yadt_lint.sys).exit(1)
-
     def test_validate_hosts_should_raise_exception_when_host_is_invalid(self):
         host_list = ['devman01', 'tuvman01', 'foofail01']
         self.assertRaises(ValueError, yadt_lint.validate_hostnames, host_list)
@@ -133,45 +93,6 @@ class YadtLintTest(unittest.TestCase):
     def test_validate_hosts_should_not_raise_exception_when_host_is_valid(self):
         host_list = ['devman01', 'tuvman01']
         yadt_lint.validate_hostnames(host_list)
-
-    def test_validate_services_input_should_pass(self):
-        yadt_lint.validate_services_input(None)
-
-    def test_should_exit_with_error_when_phyles_target_schema_validation_fails(self):
-        mock_when(yadt_lint.phyles).package_spec(any_value(), any_value(), any_value(), any_value()).thenReturn(None)
-        mock_schema = mock()
-        mock_when(yadt_lint.phyles).load_schema(any_value(), any_value()).thenReturn(mock_schema)
-        mock_when(mock_schema).validate_config(any_value()).thenRaise(phyles.ConfigError)
-        mock_when(yadt_lint.phyles).sample_config(any_value()).thenReturn(None)
-        mock_when(yadt_lint.sys).exit(any_value()).thenReturn(None)
-
-        yadt_lint._validate_target_schema(mock())
-
-        verify(yadt_lint.sys).exit(1)
-
-    def test_should_exit_with_error_when_phyles_services_schema_validation_fails(self):
-        mock_when(yadt_lint.phyles).package_spec(any_value(), any_value(), any_value(), any_value()).thenReturn(None)
-        mock_schema = mock()
-        mock_when(yadt_lint.phyles).load_schema(any_value(), any_value()).thenReturn(mock_schema)
-        mock_when(mock_schema).validate_config(any_value()).thenRaise(phyles.ConfigError)
-        mock_when(yadt_lint.phyles).sample_config(any_value()).thenReturn(None)
-        mock_when(yadt_lint.sys).exit(any_value()).thenReturn(None)
-
-        yadt_lint._validate_services_schema(mock())
-
-        verify(yadt_lint.sys).exit(1)
-
-    def test_should_not_exit_with_error_when_phyles_services_schema_validation_succeed(self):
-        mock_when(yadt_lint.phyles).package_spec(any_value(), any_value(), any_value(), any_value()).thenReturn(None)
-        mock_schema = mock()
-        mock_when(yadt_lint.phyles).load_schema(any_value(), any_value()).thenReturn(mock_schema)
-        mock_when(mock_schema).validate_config(any_value()).thenReturn(None)
-        mock_when(yadt_lint.phyles).sample_config(any_value()).thenReturn(None)
-        mock_when(yadt_lint.sys).exit(any_value()).thenReturn(None)
-
-        yadt_lint._validate_services_schema(mock())
-
-        verify(yadt_lint.sys, never).exit(1)
 
     def test_should_exit_when_invalid_targetfile_name_is_given(self):
         mock_args = {'<file>': 'foobar',
@@ -185,15 +106,3 @@ class YadtLintTest(unittest.TestCase):
         yadt_lint.run()
 
         verify(yadt_lint.sys).exit(1)
-
-    def test_should_not_exit_when_phyles_schema_validation_succeeds(self):
-        mock_when(yadt_lint.phyles).package_spec(any_value(), any_value(), any_value(), any_value()).thenReturn(None)
-        mock_schema = mock()
-        mock_when(yadt_lint.phyles).load_schema(any_value(), any_value()).thenReturn(mock_schema)
-        mock_when(mock_schema).validate_config(any_value()).thenReturn(None)
-        mock_when(yadt_lint.phyles).sample_config(any_value()).thenReturn(None)
-        mock_when(yadt_lint.sys).exit(any_value()).thenReturn(None)
-
-        yadt_lint._validate_target_schema(mock())
-
-        verify(yadt_lint.sys, never).exit(1)

@@ -37,7 +37,7 @@ def run():
     if filename != 'target':
         logger.error('is not a valid targetfile name, should be named "target"')
         sys.exit(1)
-    _validate_input(args)
+    _validate_yaml_input(args)
 
 
 def _get_configuration(args):  # pragma: no cover
@@ -46,7 +46,7 @@ def _get_configuration(args):  # pragma: no cover
     return configuration
 
 
-def _validate_schema(configuration):
+def _validate_target_schema(configuration):
     spec = phyles.package_spec(phyles.Undefined, "yadt_lint", ".", "yadt-target.yaml")
     converters = {'valid hostnames': validate_hostnames}
     schema = phyles.load_schema(spec, converters)
@@ -61,10 +61,10 @@ def _validate_schema(configuration):
         sys.exit(1)
 
 
-def _validate_input(args):
+def _validate_yaml_input(args):
     try:
         configuration = _get_configuration(args)
-        _validate_schema(configuration)
+        _validate_target_schema(configuration)
     except ScannerError as error:
         if hasattr(error, 'problem_mark'):
             mark = error.problem_mark
