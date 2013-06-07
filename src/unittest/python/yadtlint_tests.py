@@ -57,6 +57,30 @@ class YadtLintTest(unittest.TestCase):
         verify(yadt_lint.sys).exit(1)
         verify(yadt_lint.logger).error('Invalid YAML Format check position: (3:4)')
 
+    def test_should_call_exit_with_error_when_config_validation_failed(self):
+        mock_schema = mock()
+        mock_when(mock_schema).validate_config(any_value()).thenRaise(phyles.ConfigError)
+        mock_when(yadt_lint.phyles).package_spec(any_value(), any_value(), any_value(), any_value()).thenReturn(None)
+        mock_when(yadt_lint.phyles).load_schema(any_value(), any_value()).thenReturn(mock_schema)
+        mock_when(yadt_lint.phyles).sample_config(any_value()).thenReturn(None)
+        mock_when(yadt_lint.sys).exit(any_value()).thenReturn(None)
+
+        yadt_lint._validate_target_schema(mock())
+
+        verify(yadt_lint.sys).exit(1)
+
+    def test_should_not_exit_with_error_when_config_validation_succeeds(self):
+        mock_schema = mock()
+        mock_when(mock_schema).validate_config(any_value()).thenReturn(None)
+        mock_when(yadt_lint.phyles).package_spec(any_value(), any_value(), any_value(), any_value()).thenReturn(None)
+        mock_when(yadt_lint.phyles).load_schema(any_value(), any_value()).thenReturn(mock_schema)
+        mock_when(yadt_lint.phyles).sample_config(any_value()).thenReturn(None)
+        mock_when(yadt_lint.sys).exit(any_value()).thenReturn(None)
+
+        yadt_lint._validate_target_schema(mock())
+
+        verify(yadt_lint.sys, never).exit(any_value())
+
     def test_run_should_exit_with_error_when_non_existing_file_is_given(self):
         mock_args = {'<file>': 'target',
                      'target_validate': True,
