@@ -45,6 +45,9 @@ def set_properties(project):
     project.get_property('filter_resources_glob').append('**/yadtcontroller/__init__.py')
 
     project.depends_on('docopt')
+    project.depends_on('configobj')
+    project.depends_on('phyles')
+    project.depends_on('pyyaml')
 
 @init(environments="teamcity")
 def set_properties_for_teamcity(project):
