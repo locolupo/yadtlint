@@ -18,6 +18,7 @@ from yaml.scanner import ScannerError
 import phyles
 import sys
 import re
+import os
 
 __version__ = '${version}'
 
@@ -33,7 +34,7 @@ logger.setLevel(INFO)
 def run():
 
     args = docopt(__doc__, version=__version__)
-    filename = args['<file>']
+    filename = os.path.basename(args['<file>'])
     if filename != 'target':
         logger.error('is not a valid targetfile name, should be named "target"')
         sys.exit(1)
