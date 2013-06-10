@@ -32,22 +32,20 @@ default_task = ['analyze', 'publish']
 
 @init
 def set_properties(project):
-    project.build_depends_on('mockito')
-    project.build_depends_on('mock')
-    project.build_depends_on('flake8')
-    project.build_depends_on('pyyaml')
-    project.build_depends_on('configobj')
-    project.build_depends_on('phyles')
-    project.build_depends_on('argparse')
-    project.build_depends_on('ordereddict')
-
-    project.set_property('copy_resources_target', '$dir_dist')
-    project.get_property('filter_resources_glob').append('**/yadtcontroller/__init__.py')
 
     project.depends_on('docopt')
     project.depends_on('configobj')
     project.depends_on('phyles')
     project.depends_on('pyyaml')
+
+    project.build_depends_on('mockito')
+    project.build_depends_on('mock')
+    project.build_depends_on('flake8')
+    project.build_depends_on('argparse')
+    project.build_depends_on('ordereddict')
+
+    project.set_property('copy_resources_target', '$dir_dist')
+    project.get_property('filter_resources_glob').append('**/yadtcontroller/__init__.py')
 
 @init(environments="teamcity")
 def set_properties_for_teamcity(project):
