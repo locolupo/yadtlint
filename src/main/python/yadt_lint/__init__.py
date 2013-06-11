@@ -23,7 +23,7 @@ import os
 __version__ = '${version}'
 
 
-IS24HostnameRegex = ".*((BeR|hAm|dev|tuV|Lst)[a-z]{3}\d\d).*"
+IS24HostnameRegex = "^.*((BeR|hAm|dev|tuV|Lst)[a-z]{3}((\d\d)|(\d?\*)|(\[\d\.\.\d\d\])|(\[\d\d\.\.\d\d\])|(\[\d\.\.\d\]))).*$"
 IS24HostPattern = re.compile(IS24HostnameRegex, re.IGNORECASE)
 
 logger = getLogger('yadt_lint')

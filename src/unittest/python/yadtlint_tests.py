@@ -3,6 +3,7 @@ from mockito import when as mock_when, verify, unstub, any as any_value, mock, n
 from yaml.scanner import ScannerError
 from yaml.error import Mark
 import phyles
+import re
 
 import yadt_lint
 
@@ -130,3 +131,26 @@ class YadtLintTest(unittest.TestCase):
         yadt_lint.run()
 
         verify(yadt_lint.sys).exit(1)
+
+
+class RegexTests(unittest.TestCase):
+    MATCHER = yadt_lint.IS24HostPattern
+
+    def test_should_not_match_invalid_hostname(self):
+        self.assertFalse(self.MATCHER.match('foobartest'))
+        self.assertFalse(self.MATCHER.match('devytcc02'))
+        self.assertFalse(self.MATCHER.match('barytc01'))
+
+    def test_should_match_host_name(self):
+        self.assertTrue(self.MATCHER.match('devytc01'))
+
+    def test_should_match_host_name_with_wildcard(self):
+        self.assertTrue(self.MATCHER.match('devytc*'))
+
+    def test_should_match_host_name_with_number_followed_by_wildcard(self):
+        self.assertTrue(self.MATCHER.match('devytc0*'))
+
+    def test_should_match_host_name_with_square_brackets(self):
+        self.assertTrue(self.MATCHER.match('devytc[1..10]'))
+        self.assertTrue(self.MATCHER.match('devytc[10..15]'))
+        self.assertTrue(self.MATCHER.match('devytc[1..3]'))
