@@ -35,7 +35,7 @@ def run():
 
     args = docopt(__doc__, version=__version__)
     filename = os.path.basename(args['<file>'])
-    if filename != 'target':
+    if filename != 'target.yaml':
         logger.error('is not a valid targetfile name, should be named "target"')
         sys.exit(1)
     _validate_yaml_input(args)
@@ -48,7 +48,7 @@ def _get_configuration(args):  # pragma: no cover
 
 
 def _validate_target_schema(configuration):
-    spec = phyles.package_spec(phyles.Undefined, "yadt_lint", "yadt-target.yaml")
+    spec = phyles.package_spec(phyles.Undefined, "yadt_lint", "test", "yadt-target.yaml")
     converters = {'valid hostnames': validate_hostnames}
     schema = phyles.load_schema(spec, converters)
     try:

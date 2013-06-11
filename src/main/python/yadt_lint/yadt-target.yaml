@@ -1,7 +1,0 @@
-%YAML 1.2
----
-!!omap
--  cheatsheet:
-   - valid hostnames
-   - http://www.yadt-project.org/
-   - sample for a valid target file
