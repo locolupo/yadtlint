@@ -37,12 +37,12 @@ def set_properties(project):
     project.depends_on('configobj')
     project.depends_on('phyles')
     project.depends_on('pyyaml')
+    project.depends_on('ordereddict')
 
     project.build_depends_on('mockito')
     project.build_depends_on('mock')
     project.build_depends_on('flake8')
     project.build_depends_on('argparse')
-    project.build_depends_on('ordereddict')
 
     project.set_property('copy_resources_target', '$dir_dist')
     project.get_property('filter_resources_glob').append('**/yadt_lint/__init__.py')
@@ -54,5 +54,5 @@ def set_properties(project):
 def set_properties_for_teamcity(project):
     import os
     project.version = '%s-%s' % (project.version, os.environ.get('BUILD_NUMBER', 0))
-    project.default_task = ['install_build_dependencies', 'package']
+    project.default_task = ['install_dependencies', 'package']
     project.get_property('distutils_commands').append('bdist_rpm')
