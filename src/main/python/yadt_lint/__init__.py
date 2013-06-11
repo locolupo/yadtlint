@@ -35,7 +35,7 @@ def run():
 
     args = docopt(__doc__, version=__version__)
     filename = os.path.basename(args['<file>'])
-    if filename != 'target.yaml':
+    if filename != 'target':
         logger.error('is not a valid targetfile name, should be named "target"')
         sys.exit(1)
     _validate_yaml_input(args)
