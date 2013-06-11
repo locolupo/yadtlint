@@ -44,6 +44,8 @@ def set_properties(project):
     project.build_depends_on('flake8')
     project.build_depends_on('argparse')
 
+    project.include_file('yadt_lint', 'files/yadt-target.yaml')
+
     project.set_property('copy_resources_target', '$dir_dist')
     project.get_property('filter_resources_glob').append('**/yadt_lint/__init__.py')
 
