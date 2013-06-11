@@ -48,7 +48,7 @@ def _get_configuration(args):  # pragma: no cover
 
 
 def _validate_target_schema(configuration):
-    spec = phyles.package_spec(phyles.Undefined, "yadt_lint", ".", "yadt-target.yaml")
+    spec = phyles.package_spec(phyles.Undefined, "yadt_lint", "yadt-target.yaml")
     converters = {'valid hostnames': validate_hostnames}
     schema = phyles.load_schema(spec, converters)
     try:

@@ -24,7 +24,7 @@ name = 'yadtlint'
 license = 'GNU GPL v3'
 summary = 'a linter yadt configuration files'
 url = 'https://github.com/locolupo/yadtlint'
-version = '0.1.0'
+version = '0.1.1'
 
 
 default_task = ['analyze', 'publish']
@@ -46,6 +46,9 @@ def set_properties(project):
 
     project.set_property('copy_resources_target', '$dir_dist')
     project.get_property('filter_resources_glob').append('**/yadtcontroller/__init__.py')
+
+    project.install_file('/etc/yadtlint/', 'yadt_lint/yadt-target.yaml')
+
 
 @init(environments="teamcity")
 def set_properties_for_teamcity(project):
