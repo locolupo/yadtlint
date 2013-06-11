@@ -134,7 +134,7 @@ class YadtLintTest(unittest.TestCase):
 
 
 class RegexTests(unittest.TestCase):
-    MATCHER = yadt_lint.IS24HostPattern
+    MATCHER = yadt_lint.HostPattern
 
     def test_should_not_match_invalid_hostname(self):
         self.assertFalse(self.MATCHER.match('foobartest'))

@@ -23,8 +23,8 @@ import os
 __version__ = '${version}'
 
 
-IS24HostnameRegex = "^.*((BeR|hAm|dev|tuV|Lst)[a-z]{3}((\d\d)|(\d?\*)|(\[\d\.\.\d\d\])|(\[\d\d\.\.\d\d\])|(\[\d\.\.\d\]))).*$"
-IS24HostPattern = re.compile(IS24HostnameRegex, re.IGNORECASE)
+TargetRegExp = "^.*((BeR|hAm|dev|tuV|Lst)[a-z]{3}((\d\d)|(\d?\*)|(\[\d\.\.\d\d\])|(\[\d\d\.\.\d\d\])|(\[\d\.\.\d\]))).*$"
+HostPattern = re.compile(TargetRegExp, re.IGNORECASE)
 
 logger = getLogger('yadt_lint')
 basicConfig()
@@ -80,6 +80,6 @@ def validate_hostnames(hosts):
     if not hosts:
         raise ValueError('No hostname given')
     for host in hosts:
-        if not IS24HostPattern.match(host):
+        if not HostPattern.match(host):
             raise ValueError('hostname invalid: %s' % host)
     return hosts
