@@ -53,7 +53,7 @@ def _validate_target_schema(configuration):
     schema = phyles.load_schema(spec, converters)
     try:
         config = schema.validate_config(configuration)
-        logger.info(config)
+        logger.debug(config)
         logger.info('Ok - targetfile valid')
     except phyles.ConfigError as error:
         logger.error('Nope - targetfile invalid')
