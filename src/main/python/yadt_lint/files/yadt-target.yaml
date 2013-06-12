@@ -3,5 +3,5 @@
 !!omap
 -  hosts:
    - valid hostnames
-   - ''
+   - devxyz01
    -

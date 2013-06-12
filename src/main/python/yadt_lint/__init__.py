@@ -56,9 +56,8 @@ def _validate_target_schema(configuration):
         logger.info(config)
         logger.info('Ok - targetfile valid')
     except phyles.ConfigError as error:
-        logger.info('Nope - targetfile invalid')
-        logger.info(error)
-        logger.info(phyles.sample_config(schema))
+        logger.error('Nope - targetfile invalid')
+        logger.error(error)
         sys.exit(1)
 
 
